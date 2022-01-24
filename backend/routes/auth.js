@@ -1,5 +1,5 @@
 const express = require("express");
-
+const fetchuser = require("../middleware/fetchuser")
 const User = require("../model/User");
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
@@ -8,7 +8,7 @@ const { body, validationResult } = require("express-validator");
 
 
 const JWT_SECRET = "youcannothack";
-//create a user for sign up
+//create user  endpoint
 router.post(
   "/",
   [
@@ -52,7 +52,7 @@ router.post(
   }
 );
 
-
+// login endpoint
 router.post(
   "/login",
   [
@@ -85,7 +85,7 @@ router.post(
         }
       }
       const authtoken   = jwt.sign(data,JWT_SECRET)
-      res.json(authtoken);
+      res.json({authtoken});
 
     }
     catch (error) 
@@ -93,5 +93,24 @@ router.post(
       res.status(404).json({ error: "page not found" });
     }
  })
+
+// get login user details  /api/auth/getuser
+router.post('/getuser',fetchuser, async (req,res)=>{
+
+  try{
+    console.log("first");
+    userid = req.user.id
+    const user = await User.findById(userid).select("-password")
+    res.send(user)
+
+  }
+  catch(err)
+  {
+    
+    return res.status(500).send("Internal server error")
+  }
+
+
+})
 
 module.exports = router;
