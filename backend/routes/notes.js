@@ -47,4 +47,33 @@ router.post('/createNotes',[
 
 
 // Route-3 to update Notes login required
+
+router.put('/updateNotes/:id',fetchuser,async (req,res)=>{
+    
+    try{
+        const {title,description,tag} = req.body
+        let notes ={}
+        if(title) notes.title = title
+        if(description) notes.description = description
+        if(tag) notes.tag = tag 
+        
+        let note = await Notes.findById(req.params.id)
+        if(!note) return res.status(404).send("nt found page")
+        if(note.user.toString()!==req.user.id){
+            return res.status(401).send("acess denied")
+        }
+        
+        note = await Notes.findByIdAndUpdate(req.params.id,{$set:notes},{new:true})
+        console.log(note.user.toString(),req.user.id);
+        res.json(note)
+
+       
+    }
+    catch(err)
+    {
+        res.status(404).json({ error: "internal server error" });
+    }
+
+
+})
 module.exports = router
