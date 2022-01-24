@@ -8,7 +8,7 @@ const { body, validationResult } = require("express-validator");
 
 
 const JWT_SECRET = "youcannothack";
-//create user  endpoint
+//Route-1 creating user endpoint /api/auth
 router.post(
   "/",
   [
@@ -52,7 +52,7 @@ router.post(
   }
 );
 
-// login endpoint
+// Route-2 login with password /api/auth/login
 router.post(
   "/login",
   [
@@ -94,11 +94,10 @@ router.post(
     }
  })
 
-// get login user details  /api/auth/getuser
+// Route-3 getting user details by auth-token  /api/auth/getuser
 router.post('/getuser',fetchuser, async (req,res)=>{
 
   try{
-    console.log("first");
     userid = req.user.id
     const user = await User.findById(userid).select("-password")
     res.send(user)
