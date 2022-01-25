@@ -76,4 +76,30 @@ router.put('/updateNotes/:id',fetchuser,async (req,res)=>{
 
 
 })
+
+// Route-4 to delete Notes login required
+router.delete('/deleteNotes/:id',fetchuser,async (req,res)=>{
+    
+    try{
+        
+        
+        let note = await Notes.findById(req.params.id)
+        if(!note) return res.status(404).send("not found note")
+        if(note.user.toString()!==req.user.id){
+            return res.status(401).send("acesss denied")
+        }
+        
+        note = await Notes.findByIdAndDelete(req.params.id)
+        res.send("your note deleted ")
+
+       
+    }
+    catch(err)
+    {
+        res.status(404).json({ error: "internal server error" });
+    }
+
+
+})
+
 module.exports = router
