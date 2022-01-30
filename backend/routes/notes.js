@@ -24,23 +24,28 @@ router.post('/createNotes',[
     body("description", "enter valid mail").isLength({ min: 5 }),
     body("tag").isLength({ min: 3 }),
 ],fetchuser,async (req,res)=>{
-   
+   ;
     const errors = await validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
+   
     const {title,description,tag} = req.body
+   
     try{
-        const notes = new Notes({
+      
+        const notes = await new Notes({
             title,description,tag,user:req.user.id
         })
-           
+       
+    
        const savenotes = await notes.save()
-       res.json(savenotes)
+      
+      res.json(savenotes)
     }
     catch(err)
     {
-        res.status(404).json({ error: "internal server error" });
+        res.status(404).json({ error: "internally server error" });
     }
 
 })
