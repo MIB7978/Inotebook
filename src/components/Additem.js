@@ -14,6 +14,7 @@ function Additem() {
     const handleClick = ()=>
     {
         addNote(note.title,note.description,note.tag)
+        setNote({title:"",description:"",tag:"default"})
     }
   return <>
        <div className="container my-3">
@@ -28,20 +29,37 @@ function Additem() {
             id="title"
             name='title'
             onChange={onChange}
+            value={note.title}
+            required
           />
         </div>
         <div className="mb-3">
           <label htmlFor="exampleFormControlTextarea1" className="form-label">
-            Example textarea
+            description
           </label>
           <input
             className="form-control"
             id="description"
             name='description'
             onChange={onChange}
+            value={note.description}
+            required
           />
         </div>
-        <button className='btn btn-primary' onClick={handleClick}>Submit</button>
+        <div className="mb-3">
+          <label htmlFor="exampleFormControlTextarea1" className="form-label">
+            tag
+          </label>
+          <input
+            className="form-control"
+            id="tag"
+            name='tag'
+            onChange={onChange}
+            value={note.tag}
+            required
+          />
+        </div>
+        <button disabled={note.title.length===0||note.description.length===0} className='btn btn-primary' onClick={handleClick}>addnote</button>
       </div>
   </>
 }

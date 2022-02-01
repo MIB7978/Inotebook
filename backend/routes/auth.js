@@ -17,16 +17,17 @@ router.post(
     body("password").isLength({ min: 5 }),
   ],
   async (req, res) => {
+    let success=false;
     const errors = await validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
+      return res.status(400).json({success, errors: errors.array() });
     }
     try {
       // checking user exist or not
       let user = await User.findOne({ email: req.body.email });
       if (user) 
       {
-        return res.status(400).json({ error: "sorry email already exists" });
+        return res.status(400).json({success, error: "sorry email already exists" });
       }
       let salt = await bcrypt.genSalt(10);
       let secPass  = await bcrypt.hash(req.body.password,salt)
@@ -42,8 +43,9 @@ router.post(
           id:user.id
         }
       }
+      success=true
       const authtoken   = jwt.sign(data,JWT_SECRET)
-      res.json(authtoken);
+      res.json({success,authtoken});
     } 
     catch (error) 
     {
@@ -63,6 +65,7 @@ router.post(
   async (req, res) => {
     
    
+    let success = false;
     const errors = await validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
@@ -71,21 +74,22 @@ router.post(
     try{
     
       let user = await User.findOne({email})
-      console.log("1234");
+     
       if(!user)
-      return res.status(400).send("enter correct credentials")
+      return res.status(400).json({success,msg:"enter correct credentials"})
     
       let comparePass = await bcrypt.compare(password,user.password)
       if(!comparePass)
-      return res.status(400).send("enter correct credentials")
+      return res.status(400).json({success,msg:"enter correct credentials"})
    
       const data  = {
         user:{
           id:user.id
         }
       }
+      success = true;
       const authtoken   = jwt.sign(data,JWT_SECRET)
-      res.json({authtoken});
+      res.json({success, authtoken});
 
     }
     catch (error) 
