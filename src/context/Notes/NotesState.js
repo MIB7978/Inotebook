@@ -17,7 +17,7 @@ import NoteContext from "./NotesContext";
           method: 'GET', 
           
           headers: {
-            'auth-token':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjFlZGNhYTBlMGFlMDY3MWE1ZGM0Nzk1In0sImlhdCI6MTY0Mjk4MzIyMX0.GiilwnpWibLpt8_9OTyt4bHrr0NGV6XwKpoe4-20YlE'
+            'auth-token':localStorage.getItem('authtoken')
             
           },
         }); 
@@ -38,7 +38,7 @@ import NoteContext from "./NotesContext";
         headers: {
          
           'Content-Type': 'application/json',
-          'auth-token':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjFlZGNhYTBlMGFlMDY3MWE1ZGM0Nzk1In0sImlhdCI6MTY0Mjk4MzIyMX0.GiilwnpWibLpt8_9OTyt4bHrr0NGV6XwKpoe4-20YlE'
+          'auth-token':localStorage.getItem('authtoken')
           
         },
         body: JSON.stringify({"title":title.toString(),
@@ -50,7 +50,7 @@ import NoteContext from "./NotesContext";
 
       
 
-      console.log("adding a note");
+      
           
     }
 
@@ -60,15 +60,15 @@ import NoteContext from "./NotesContext";
         method: 'DELETE', 
         
         headers: {
-          'auth-token':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjFlZGNhYTBlMGFlMDY3MWE1ZGM0Nzk1In0sImlhdCI6MTY0Mjk4MzIyMX0.GiilwnpWibLpt8_9OTyt4bHrr0NGV6XwKpoe4-20YlE'
+          'auth-token':localStorage.getItem('authtoken')
           
         },
       }); 
-      // const json = response.json();
+      
       // console.log(json);
 
       
-      console.log("this id is deleted",id);
+     
       let newNote = notes.filter((ele)=>{return ele._id!==id})
       setNotes(newNote)
     }
@@ -81,7 +81,7 @@ import NoteContext from "./NotesContext";
         
         headers: {
           'Content-Type': 'application/json',
-          'auth-token':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjFlZGNhYTBlMGFlMDY3MWE1ZGM0Nzk1In0sImlhdCI6MTY0Mjk4MzIyMX0.GiilwnpWibLpt8_9OTyt4bHrr0NGV6XwKpoe4-20YlE'
+          'auth-token':localStorage.getItem('authtoken')
           
         },
         body: JSON.stringify({"title":title.toString(),

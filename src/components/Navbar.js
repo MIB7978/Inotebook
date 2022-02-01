@@ -1,14 +1,21 @@
-import React, {useEffect} from 'react';
+import React  from 'react';
 import {Link,useLocation}  from "react-router-dom";
+import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 
 
 
 export const Navbar = () => {
-
+  
+  
+   let history =  useHistory()
   let location = useLocation();
-   useEffect(() => {
-     
-  }, [location]);
+  const handlelogout = ()=>
+  {
+    localStorage.clear()
+    history.push("/login")
+    
+  }
+   
   return (<>
   <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
   <div className="container-fluid">
@@ -27,10 +34,10 @@ export const Navbar = () => {
        
       
       </ul>
-      <div className="d-flex">
-       <Link className='btn btn-primary mx-1' to="/login">Login</Link>
+      {!localStorage.getItem('authtoken')? <div className="d-flex">
+       <Link className='btn btn-primary mx-1'  to="/login">Login</Link>
        <Link className='btn btn-primary mx-1' to="/signup">Signup</Link>
-      </div>
+      </div>:<button className='btn btn-primary' onClick={handlelogout}>Log out</button>}
     </div>
   </div>
 </nav>

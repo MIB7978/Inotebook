@@ -2,14 +2,22 @@ import React, { useContext, useEffect, useRef, useState } from 'react';
 import NoteContext from "../context/Notes/NotesContext";
 import Additem from './Additem';
 import NoteItem from './NoteItem';
+import AlertContext from '../context/Alert/AlertContext';
+import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 
 
 function Notes() {
   const context = useContext(NoteContext);
+  const context1 = useContext(AlertContext);
+    const {showAlert} = context1
+    let history = useHistory()
 
-  let { notes, setNotes, fetchNote ,updateNote} = context
+  let { notes, fetchNote ,updateNote} = context
   useEffect(() => {
+    if(localStorage.getItem('authtoken'))
     fetchNote()
+    else
+    history.push("/login")
   }, []);
   const [note, setNote] = useState({id:"",etitle:"",edescription:"",etag:"default"});
   const ref = useRef(null);
@@ -17,6 +25,7 @@ function Notes() {
   const updatebtn =(currentnote)=>{
     ref.current.click();
     setNote({id:currentnote._id, etitle: currentnote.title,edescription:currentnote.description,etag:currentnote.tag});
+    showAlert("updated sucessfully","success")
   }
   const onChange  = (e)=>{
     e.preventDefault()

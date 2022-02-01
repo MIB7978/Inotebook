@@ -1,8 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState ,useContext} from 'react';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
+import AlertContext from '../context/Alert/AlertContext';
 
 export default function Login() {
    
+    const context = useContext(AlertContext);
+    const {showAlert} = context
     const [cred, setCred] = useState({email:"",password:""});
     let history = useHistory();
     const onSubmit = async (e)=>{
@@ -22,11 +25,13 @@ export default function Login() {
           if(json.success===true)
           {
              localStorage.setItem('authtoken',json.authtoken)
+             showAlert("logged in","success")
              history.push("/")
+
           }
           else
           {
-              alert('invalid credentials')
+            showAlert("invalid credential","danger")
           }
          
     }
@@ -35,7 +40,8 @@ export default function Login() {
 
        setCred({...cred,[e.target.name]: e.target.value })
     }
-    return <div className='container'>
+    return <div className='container mt-3'>
+        <h1 className='mb-3' style={{"margin-top":"5rem"}}>Login to Inotebook</h1>
         <form onSubmit={onSubmit}>
             <div className="mb-3">
                 <label htmlFor="exampleInputEmail1" className="form-label">Email address</label>

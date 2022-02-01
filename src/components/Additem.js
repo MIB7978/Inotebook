@@ -1,9 +1,11 @@
 import React, { useContext, useState } from 'react';
 import NoteContext from "../context/Notes/NotesContext";
-
+import AlertContext from '../context/Alert/AlertContext';
 
 function Additem() {
 
+  const context1 = useContext(AlertContext);
+    const {showAlert} = context1
     const context = useContext(NoteContext);
     let {addNote} = context
     const [note, setNote] = useState({title:"",description:"",tag:"default"});
@@ -15,6 +17,7 @@ function Additem() {
     {
         addNote(note.title,note.description,note.tag)
         setNote({title:"",description:"",tag:"default"})
+        showAlert("note added successfully","success")
     }
   return <>
        <div className="container my-3">

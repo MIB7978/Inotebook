@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState,useContext } from 'react';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
-
+import AlertContext from '../context/Alert/AlertContext';
 export default function Signup() {
 
+    const context = useContext(AlertContext);
+    const {showAlert} = context
      let history = useHistory();
     const [cred, setCred] = useState({name:"",email:"",password:""});
     const onSubmit = async (e)=>{
@@ -22,10 +24,11 @@ export default function Signup() {
           if(json.success === true)
           {
               history.push("/")
+              showAlert("signed in","success")
           }
           else
           {
-              alert("user exit")
+            showAlert("User exist already","danger")
           }
     }
     const onChange =(e)=>{
